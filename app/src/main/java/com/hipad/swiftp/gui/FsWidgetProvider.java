@@ -16,7 +16,7 @@
  * Contributors:
  * Pieter Pareit - initial API and implementation
  ******************************************************************************/
-package be.hipad.swiftp.gui;
+package com.hipad.swiftp.gui;
 
 import android.app.PendingIntent;
 import android.app.Service;
@@ -33,8 +33,8 @@ import net.vrallev.android.cat.Cat;
 
 import java.net.InetAddress;
 
-import be.hipad.swiftp.FsService;
-import be.hipad.swiftp.R;
+import com.hipad.swiftp.FsService;
+import com.hipad.swiftp.R;
 
 /**
  * Simple widget for FTP Server.

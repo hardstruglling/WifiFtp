@@ -18,7 +18,7 @@ You should have received a copy of the GNU General Public License
 along with SwiFTP.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package be.hipad.swiftp;
+package com.hipad.swiftp;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -48,8 +48,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import be.hipad.swiftp.server.SessionThread;
-import be.hipad.swiftp.server.TcpListener;
+import com.hipad.swiftp.server.SessionThread;
+import com.hipad.swiftp.server.TcpListener;
 import lombok.val;
 
 public class FsService extends Service implements Runnable {

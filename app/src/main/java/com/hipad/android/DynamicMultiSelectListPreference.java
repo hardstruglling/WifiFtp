@@ -1,4 +1,4 @@
-package be.hipad.android;
+package com.hipad.android;
 
 import android.content.Context;
 import android.preference.MultiSelectListPreference;

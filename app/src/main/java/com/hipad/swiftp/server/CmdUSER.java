@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with SwiFTP.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package be.hipad.swiftp.server;
+package com.hipad.swiftp.server;
 
 import android.util.Log;
 
@@ -35,7 +35,7 @@ public class CmdUSER extends FtpCmd implements Runnable {
     @Override
     public void run() {
         Log.d(TAG, "USER executing");
-        String userName = FtpCmd.getParameter(input);
+        String userName = getParameter(input);
         if (!userName.matches("[A-Za-z0-9]+")) {
             sessionThread.writeString("530 Invalid username\r\n");
             return;

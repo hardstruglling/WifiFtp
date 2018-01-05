@@ -17,7 +17,7 @@
  * Pieter Pareit - initial API and implementation
  ******************************************************************************/
 
-package be.hipad.swiftp.gui;
+package com.hipad.swiftp.gui;
 
 import android.app.AlertDialog;
 import android.content.Context;

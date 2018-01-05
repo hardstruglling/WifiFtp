@@ -24,7 +24,7 @@ along with SwiFTP.  If not, see <http://www.gnu.org/licenses/>.
  * of output.
  */
 
-package be.hipad.swiftp.server;
+package com.hipad.swiftp.server;
 
 import java.io.File;
 import java.text.SimpleDateFormat;

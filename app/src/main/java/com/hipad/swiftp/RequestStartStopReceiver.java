@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with SwiFTP.  If not, see <http://www.gnu.org/licenses/>.
  */
-package be.hipad.swiftp;
+package com.hipad.swiftp;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -25,6 +25,8 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.Gravity;
 import android.widget.Toast;
+
+import com.hipad.swiftp.R;
 
 public class RequestStartStopReceiver extends BroadcastReceiver {
 

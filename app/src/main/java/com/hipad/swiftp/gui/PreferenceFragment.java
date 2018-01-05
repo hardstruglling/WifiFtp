@@ -17,7 +17,7 @@
  * Pieter Pareit - initial API and implementation
  ******************************************************************************/
 
-package be.hipad.swiftp.gui;
+package com.hipad.swiftp.gui;
 
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
@@ -50,11 +50,12 @@ import java.io.File;
 import java.net.InetAddress;
 import java.util.List;
 
-import be.hipad.android.DynamicMultiSelectListPreference;
-import be.hipad.swiftp.App;
-import be.hipad.swiftp.FsService;
-import be.hipad.swiftp.FsSettings;
-import be.hipad.swiftp.R;
+import com.hipad.android.DynamicMultiSelectListPreference;
+import com.hipad.swiftp.App;
+import com.hipad.swiftp.FsService;
+import com.hipad.swiftp.FsSettings;
+
+import com.hipad.swiftp.R;
 
 /**
  * This is the main activity for swiftp, it enables the user to start the server service

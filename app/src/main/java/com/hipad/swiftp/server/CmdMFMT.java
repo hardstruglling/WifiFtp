@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with SwiFTP.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package be.hipad.swiftp.server;
+package com.hipad.swiftp.server;
 
 import java.io.File;
 import java.text.ParseException;
@@ -26,7 +26,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import be.hipad.swiftp.Util;
+import com.hipad.swiftp.Util;
 import android.util.Log;
 
 /**

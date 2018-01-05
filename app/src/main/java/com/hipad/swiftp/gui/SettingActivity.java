@@ -17,7 +17,7 @@
  * Pieter Pareit - initial API and implementation
  ******************************************************************************/
 
-package be.hipad.swiftp.gui;
+package com.hipad.swiftp.gui;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -36,16 +36,16 @@ import android.widget.Toast;
 
 import net.vrallev.android.cat.Cat;
 
-import be.hipad.swiftp.App;
-import be.hipad.swiftp.BuildConfig;
-import be.hipad.swiftp.FsSettings;
-import be.hipad.swiftp.R;
+import com.hipad.swiftp.App;
+import com.hipad.swiftp.BuildConfig;
+import com.hipad.swiftp.FsSettings;
+import com.hipad.swiftp.R;
 
 /**
  * This is the main activity for swiftp, it enables the user to start the server service
  * and allows the users to change the settings.
  */
-public class MainActivity extends AppCompatActivity{
+public class SettingActivity extends AppCompatActivity{
 
     final static int PERMISSIONS_REQUEST_CODE = 12;
 

@@ -3,4 +3,10 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="black_three">#333333</color>
+    <color name="connect_background">#eaebeb</color>
+    <color name="white">#ffffff</color>
+    <color name="gray_stroke">#dce0e0</color>
+    <color name="text_instruction">#babfbf</color>
+    <color name="text_start">#29B6F6</color>
 </resources>

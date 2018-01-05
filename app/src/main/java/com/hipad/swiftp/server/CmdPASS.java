@@ -17,11 +17,11 @@ You should have received a copy of the GNU General Public License
 along with SwiFTP.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package be.hipad.swiftp.server;
+package com.hipad.swiftp.server;
 
 import android.util.Log;
-import be.hipad.swiftp.FsSettings;
-import be.hipad.swiftp.Util;
+import com.hipad.swiftp.FsSettings;
+import com.hipad.swiftp.Util;
 
 public class CmdPASS extends FtpCmd implements Runnable {
     private static final String TAG = CmdPASS.class.getSimpleName();

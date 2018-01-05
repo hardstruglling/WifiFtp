@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with SwiFTP.  If not, see <http://www.gnu.org/licenses/>.
  */
-package be.hipad.swiftp.locale;
+package com.hipad.swiftp.locale;
 
 import android.content.Context;
 import android.os.Bundle;

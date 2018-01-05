@@ -17,10 +17,9 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with SwiFTP.  If not, see <http://www.gnu.org/licenses/>.
 -->
-
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="be.hipad.swiftp">
+    package="com.hipad.swiftp">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -32,91 +31,95 @@ along with SwiFTP.  If not, see <http://www.gnu.org/licenses/>.
     <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
 
     <application
-        android:name="be.hipad.swiftp.App"
+        android:name="com.hipad.swiftp.App"
         android:allowBackup="true"
         android:icon="@mipmap/launcher"
         android:label="@string/swiftp_name">
-
-        <activity
-            android:name="be.hipad.swiftp.gui.MainActivity"
-            android:theme="@style/AppThemeDark">
+        <activity android:name="com.hipad.swiftp.gui.ConnectActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
-            android:name="be.hipad.swiftp.gui.AboutActivity"
-            android:theme="@style/AppThemeDark"
-            android:parentActivityName="be.hipad.swiftp.gui.MainActivity"/>
+            android:name="com.hipad.swiftp.gui.SettingActivity"
+            android:theme="@style/AppThemeDark">
+        </activity>
+        <activity
+            android:name="com.hipad.swiftp.gui.AboutActivity"
+            android:parentActivityName="com.hipad.swiftp.gui.SettingActivity"
+            android:theme="@style/AppThemeDark" />
 
-        <service android:name="be.hipad.swiftp.FsService" />
+        <service android:name="com.hipad.swiftp.FsService" />
 
         <receiver
-            android:name="be.hipad.swiftp.gui.FsNotification"
+            android:name="com.hipad.swiftp.gui.FsNotification"
             android:exported="false">
             <intent-filter>
-                <action android:name="be.ppareit.swiftp.FTPSERVER_STARTED" />
-                <action android:name="be.ppareit.swiftp.FTPSERVER_STOPPED" />
+                <action android:name="com.hipad.swiftp.FTPSERVER_STARTED" />
+                <action android:name="com.hipad.swiftp.FTPSERVER_STOPPED" />
             </intent-filter>
         </receiver>
 
-        <service android:name="be.hipad.swiftp.NsdService" />
+        <service android:name="com.hipad.swiftp.NsdService" />
+
         <receiver
-            android:name="be.hipad.swiftp.NsdService$StartStopReceiver"
+            android:name="com.hipad.swiftp.NsdService$StartStopReceiver"
             android:exported="false">
             <intent-filter>
-                <action android:name="be.ppareit.swiftp.FTPSERVER_STARTED" />
-                <action android:name="be.ppareit.swiftp.FTPSERVER_STOPPED" />
+                <action android:name="com.hipad.swiftp.FTPSERVER_STARTED" />
+                <action android:name="com.hipad.swiftp.FTPSERVER_STOPPED" />
             </intent-filter>
         </receiver>
 
         <!-- Don't export this receiver in free, this clashes with paid -->
         <receiver
-            android:name="be.hipad.swiftp.RequestStartStopReceiver"
+            android:name="com.hipad.swiftp.RequestStartStopReceiver"
             android:exported="true">
             <intent-filter>
-                <action android:name="be.ppareit.swiftp.ACTION_START_FTPSERVER" />
-                <action android:name="be.ppareit.swiftp.ACTION_STOP_FTPSERVER" />
+                <action android:name="com.hipad.swiftp.ACTION_START_FTPSERVER" />
+                <action android:name="com.hipad.swiftp.ACTION_STOP_FTPSERVER" />
             </intent-filter>
         </receiver>
-
-        <receiver android:name="be.hipad.swiftp.WifiStateChangeReceiver">
+        <receiver android:name="com.hipad.swiftp.WifiStateChangeReceiver">
             <intent-filter>
                 <action android:name="android.net.wifi.STATE_CHANGE" />
             </intent-filter>
         </receiver>
 
-        <service android:name="be.hipad.swiftp.WifiStateChangeReceiver$StartServerService" />
-        <service android:name="be.hipad.swiftp.WifiStateChangeReceiver$StopServerService" />
+        <service android:name="com.hipad.swiftp.WifiStateChangeReceiver$StartServerService" />
+        <service android:name="com.hipad.swiftp.WifiStateChangeReceiver$StopServerService" />
 
         <receiver
-            android:name="be.hipad.swiftp.gui.FsWidgetProvider"
+            android:name="com.hipad.swiftp.gui.FsWidgetProvider"
             android:exported="false"
             android:icon="@mipmap/launcher"
             android:label="@string/swiftp_name">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="be.ppareit.swiftp.FTPSERVER_STARTED" />
-                <action android:name="be.ppareit.swiftp.FTPSERVER_STOPPED" />
+                <action android:name="com.hipad.swiftp.FTPSERVER_STARTED" />
+                <action android:name="com.hipad.swiftp.FTPSERVER_STOPPED" />
             </intent-filter>
+
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_info" />
         </receiver>
 
-        <service android:name="be.hipad.swiftp.gui.FsWidgetProvider$UpdateService" />
+        <service android:name="com.hipad.swiftp.gui.FsWidgetProvider$UpdateService" />
 
         <!-- Tasker/Locale integration -->
         <activity
-            android:name="be.hipad.swiftp.locale.EditActivity"
+            android:name="com.hipad.swiftp.locale.EditActivity"
             android:exported="true"
             android:icon="@drawable/widget_on"
             android:label="@string/swiftp_name"
             android:theme="@style/AppThemeDark"
             android:uiOptions="splitActionBarWhenNarrow"
             android:windowSoftInputMode="adjustResize">
+
             <!-- this Intent filter allows the plug-in to be discovered by the host. -->
             <intent-filter>
                 <action android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING" />
@@ -124,13 +127,12 @@ along with SwiFTP.  If not, see <http://www.gnu.org/licenses/>.
         </activity>
 
         <receiver
-            android:name="be.hipad.swiftp.locale.FireReceiver"
+            android:name="com.hipad.swiftp.locale.FireReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.twofortyfouram.locale.intent.action.FIRE_SETTING" />
             </intent-filter>
         </receiver>
-
     </application>
 
 </manifest>

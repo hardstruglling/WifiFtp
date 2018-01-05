@@ -24,12 +24,12 @@ along with SwiFTP.  If not, see <http://www.gnu.org/licenses/>.
  * of output.
  */
 
-package be.hipad.swiftp.server;
+package com.hipad.swiftp.server;
 
 import java.io.File;
 
 import android.util.Log;
-import be.hipad.swiftp.Util;
+import com.hipad.swiftp.Util;
 
 public class CmdMLSD extends CmdAbstractListing implements Runnable {
     static private final String TAG = CmdMLSD.class.getSimpleName();

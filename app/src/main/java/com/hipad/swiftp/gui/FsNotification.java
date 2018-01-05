@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with SwiFTP.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package be.hipad.swiftp.gui;
+package com.hipad.swiftp.gui;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -31,9 +31,9 @@ import net.vrallev.android.cat.Cat;
 
 import java.net.InetAddress;
 
-import be.hipad.swiftp.FsService;
-import be.hipad.swiftp.FsSettings;
-import be.hipad.swiftp.R;
+import com.hipad.swiftp.FsService;
+import com.hipad.swiftp.FsSettings;
+import com.hipad.swiftp.R;
 
 public class FsNotification extends BroadcastReceiver {
 
@@ -76,7 +76,7 @@ public class FsNotification extends BroadcastReceiver {
         CharSequence contentTitle = context.getString(R.string.notification_title);
         CharSequence contentText = String.format(context.getString(R.string.notification_text), iptext);
 
-        Intent notificationIntent = new Intent(context, MainActivity.class);
+        Intent notificationIntent = new Intent(context, SettingActivity.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
 
@@ -88,7 +88,7 @@ public class FsNotification extends BroadcastReceiver {
 
         int preferenceIcon = android.R.drawable.ic_menu_preferences;
         CharSequence preferenceText = context.getString(R.string.notif_settings_text);
-        Intent preferenceIntent = new Intent(context, MainActivity.class);
+        Intent preferenceIntent = new Intent(context, SettingActivity.class);
         preferenceIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent preferencePendingIntent = PendingIntent.getActivity(context, 0, preferenceIntent, 0);
 

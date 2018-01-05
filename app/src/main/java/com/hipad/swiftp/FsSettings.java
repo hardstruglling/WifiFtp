@@ -18,7 +18,7 @@ You should have received a copy of the GNU General Public License
 along with SwiFTP.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package be.hipad.swiftp;
+package com.hipad.swiftp;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -29,6 +29,8 @@ import android.util.Log;
 import java.io.File;
 import java.util.Set;
 import java.util.TreeSet;
+
+import com.hipad.swiftp.R;
 
 public class FsSettings {
 

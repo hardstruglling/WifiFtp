@@ -9,23 +9,13 @@ android {
     buildToolsVersion "25.0.1"
 
     defaultConfig {
-        applicationId "be.ppareit.swiftp"
+        applicationId "com.hipad.swiftp"
         minSdkVersion 14
         targetSdkVersion 25
         versionCode 21701
         versionName "2.17.1"
     }
-    productFlavors {
-        playstore_paid {
-            applicationId "be.ppareit.swiftp"
-        }
-        playstore_demo {
-            applicationId "be.ppareit.swiftp_free"
-        }
-        fdroid_free {
-            applicationId "be.ppareit.swiftp_free"
-        }
-    }
+
     buildTypes {
         release {
             shrinkResources true

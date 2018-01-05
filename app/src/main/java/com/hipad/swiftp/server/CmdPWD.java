@@ -17,14 +17,14 @@ You should have received a copy of the GNU General Public License
 along with SwiFTP.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package be.hipad.swiftp.server;
+package com.hipad.swiftp.server;
 
 import android.util.Log;
 
 import java.io.File;
 import java.io.IOException;
 
-import be.hipad.swiftp.FsSettings;
+import com.hipad.swiftp.FsSettings;
 
 /**
  * PRINT WORKING DIRECTORY (PWD)

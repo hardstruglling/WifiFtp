@@ -1,4 +1,4 @@
-package be.hipad.swiftp.server;
+package com.hipad.swiftp.server;
 
 import java.io.File;
 import java.io.IOException;

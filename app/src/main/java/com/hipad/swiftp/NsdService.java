@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with SwiFTP.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package be.hipad.swiftp;
+package com.hipad.swiftp;
 
 import android.annotation.TargetApi;
 import android.app.Service;
@@ -31,6 +31,8 @@ import android.net.nsd.NsdServiceInfo;
 import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
+
+import com.hipad.swiftp.R;
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 public class NsdService extends Service {

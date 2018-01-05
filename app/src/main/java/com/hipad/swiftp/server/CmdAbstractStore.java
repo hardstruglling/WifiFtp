@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with SwiFTP.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package be.hipad.swiftp.server;
+package com.hipad.swiftp.server;
 
 /**
  * Since STOR and APPE are essentially identical except for append vs truncate,
@@ -33,7 +33,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.RandomAccessFile;
 
-import be.hipad.swiftp.MediaUpdater;
+import com.hipad.swiftp.MediaUpdater;
 
 abstract public class CmdAbstractStore extends FtpCmd {
     private final static String TAG = "CmdAbstractStore"; // TODO: .class.getSimpleName()

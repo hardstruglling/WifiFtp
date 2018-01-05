@@ -1,4 +1,4 @@
-package be.hipad.swiftp.gui;
+package com.hipad.swiftp.gui;
 
 
 import android.os.Build;
@@ -9,9 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import be.hipad.swiftp.BuildConfig;
-import be.hipad.swiftp.FsSettings;
-import be.hipad.swiftp.R;
+import com.hipad.swiftp.BuildConfig;
+import com.hipad.swiftp.FsSettings;
+import com.hipad.swiftp.R;
 
 /**
  * Created by ppareit on 5/02/17.

@@ -17,12 +17,12 @@ You should have received a copy of the GNU General Public License
 along with SwiFTP.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package be.hipad.swiftp.server;
+package com.hipad.swiftp.server;
 
 import java.io.File;
 
 import android.util.Log;
-import be.hipad.swiftp.MediaUpdater;
+import com.hipad.swiftp.MediaUpdater;
 
 public class CmdRMD extends FtpCmd implements Runnable {
     private static final String TAG = CmdRMD.class.getSimpleName();

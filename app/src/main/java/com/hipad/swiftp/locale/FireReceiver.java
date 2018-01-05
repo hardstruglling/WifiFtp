@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with SwiFTP.  If not, see <http://www.gnu.org/licenses/>.
  */
-package be.hipad.swiftp.locale;
+package com.hipad.swiftp.locale;
 
 import android.content.Context;
 import android.content.Intent;
@@ -25,9 +25,9 @@ import android.support.annotation.NonNull;
 
 import com.twofortyfouram.locale.sdk.client.receiver.AbstractPluginSettingReceiver;
 
-import be.hipad.swiftp.FsService;
+import com.hipad.swiftp.FsService;
 
-import static be.hipad.swiftp.locale.SettingsBundleHelper.getBundleRunningState;
+import static com.hipad.swiftp.locale.SettingsBundleHelper.getBundleRunningState;
 
 /**
  * Created by ppareit on 29/04/16.

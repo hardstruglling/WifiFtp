@@ -1,4 +1,4 @@
-package be.hipad.swiftp.server;
+package com.hipad.swiftp.server;
 
 import net.vrallev.android.cat.Cat;
 

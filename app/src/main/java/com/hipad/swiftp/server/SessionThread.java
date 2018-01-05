@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with SwiFTP.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package be.hipad.swiftp.server;
+package com.hipad.swiftp.server;
 
 import net.vrallev.android.cat.Cat;
 
@@ -34,8 +34,8 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.nio.ByteBuffer;
 
-import be.hipad.swiftp.App;
-import be.hipad.swiftp.FsSettings;
+import com.hipad.swiftp.App;
+import com.hipad.swiftp.FsSettings;
 
 public class SessionThread extends Thread {
 

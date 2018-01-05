@@ -1,4 +1,4 @@
-package be.hipad.swiftp;
+package com.hipad.swiftp;
 
 import android.content.Context;
 import android.content.Intent;

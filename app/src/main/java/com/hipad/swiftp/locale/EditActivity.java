@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with SwiFTP.  If not, see <http://www.gnu.org/licenses/>.
  */
-package be.hipad.swiftp.locale;
+package com.hipad.swiftp.locale;
 
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -30,12 +30,8 @@ import com.twofortyfouram.locale.sdk.client.ui.activity.AbstractPluginActivity;
 
 import net.vrallev.android.cat.Cat;
 
-import be.hipad.swiftp.FsSettings;
-import be.hipad.swiftp.R;
-
-import static be.hipad.swiftp.locale.SettingsBundleHelper.BUNDLE_BOOLEAN_RUNNING;
-import static be.hipad.swiftp.locale.SettingsBundleHelper.generateBundle;
-import static be.hipad.swiftp.locale.SettingsBundleHelper.getBundleRunningState;
+import com.hipad.swiftp.FsSettings;
+import com.hipad.swiftp.R;
 
 /**
  * Created by ppareit on 29/04/16.
@@ -86,9 +82,9 @@ public class EditActivity extends AbstractPluginActivity {
                                                @NonNull String previousBlurb) {
         if (!isBundleValid(previousBundle)) {
             Cat.e("Invalid bundle received, repairing to default");
-            previousBundle = generateBundle(this, false);
+            previousBundle = SettingsBundleHelper.generateBundle(this, false);
         }
-        boolean running = previousBundle.getBoolean(BUNDLE_BOOLEAN_RUNNING);
+        boolean running = previousBundle.getBoolean(SettingsBundleHelper.BUNDLE_BOOLEAN_RUNNING);
         RadioButton radioButton =
                 (RadioButton) findViewById(running ? R.id.radio_server_running :
                                 R.id.radio_server_stopped);
@@ -102,13 +98,13 @@ public class EditActivity extends AbstractPluginActivity {
         int checkedId = radioGroup.getCheckedRadioButtonId();
         boolean running = (checkedId == R.id.radio_server_running);
 
-        return generateBundle(this, running);
+        return SettingsBundleHelper.generateBundle(this, running);
     }
 
     @NonNull
     @Override
     public String getResultBlurb(@NonNull Bundle bundle) {
-        boolean running = getBundleRunningState(bundle);
+        boolean running = SettingsBundleHelper.getBundleRunningState(bundle);
         return running ? "Running" : "Stopped";
     }
 }
