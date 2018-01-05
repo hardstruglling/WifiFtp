@@ -21,13 +21,15 @@ package com.hipad.swiftp.gui;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Environment;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import net.vrallev.android.cat.Cat;
-
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 
 /**
@@ -50,18 +52,19 @@ public class FolderPickerDialogBuilder extends AlertDialog.Builder {
 
         ListView list = new ListView(getContext());
         list.setAdapter(mAdapter);
-        list.setOnItemClickListener(
-                (parentAdapterView, view, position, id) -> {
-                    String dir = (String) parentAdapterView.getItemAtPosition(position);
-                    final File parent;
-                    if (dir.equals("..") && (parent = mRoot.getParentFile()) != null) {
-                        mRoot = parent;
-                    } else {
-                        mRoot = new File(mRoot, dir);
-                    }
-                    update();
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String dir = (String) parent.getItemAtPosition(position);
+                final File parentFile;
+                if (dir.equals("..") && (parentFile = mRoot.getParentFile()) != null) {
+                    mRoot = parentFile;
+                } else {
+                    mRoot = new File(mRoot, dir);
                 }
-        );
+                update();
+            }
+        });
 
         setView(list);
     }
@@ -77,7 +80,6 @@ public class FolderPickerDialogBuilder extends AlertDialog.Builder {
         try {
             mRoot = new File(mRoot.getCanonicalPath());
         } catch (IOException e) {
-            Cat.w("Directory root is incorrect, fixing to external storage.");
             mRoot = Environment.getExternalStorageDirectory();
         }
 
@@ -88,23 +90,27 @@ public class FolderPickerDialogBuilder extends AlertDialog.Builder {
         }
 
         mAdapter.clear();
-        String[] dirs = mRoot.list(
-                (dir, filename) -> {
-                    File file = new File(dir, filename);
-                    return (file.isDirectory() && !file.isHidden());
-                });
+        String[] dirs = mRoot.list(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                File file = new File(dir, name);
+                return (file.isDirectory() && !file.isHidden());
+            }
+        });
         if (dirs == null) {
-            Cat.w("Unable to receive dirs list, no Access rights?");
-            Cat.d("Unable to fix, continue with empty list");
             dirs = new String[]{};
         }
         mAdapter.add("..");
         mAdapter.addAll(dirs);
     }
 
-    public AlertDialog.Builder setSelectedButton(int textId, OnSelectedListener listener) {
-        return setPositiveButton(textId,
-                (dialog, which) -> listener.onSelected(mRoot.getAbsolutePath()));
+    public AlertDialog.Builder setSelectedButton(int textId, final OnSelectedListener listener) {
+        return setPositiveButton(textId, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                listener.onSelected(mRoot.getAbsolutePath());
+            }
+        });
     }
 
     public interface OnSelectedListener {

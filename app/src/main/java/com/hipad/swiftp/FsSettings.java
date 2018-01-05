@@ -104,7 +104,7 @@ public class FsSettings {
 
     public static Set<String> getAutoConnectList() {
         SharedPreferences sp = getSharedPreferences();
-        return sp.getStringSet("autoconnect_preference", new TreeSet<>());
+        return sp.getStringSet("autoconnect_preference", new TreeSet<String>());
     }
 
     public static int getTheme() {

@@ -33,9 +33,6 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.util.Log;
-
-import net.vrallev.android.cat.Cat;
-
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.Inet4Address;
@@ -50,7 +47,6 @@ import java.util.List;
 
 import com.hipad.swiftp.server.SessionThread;
 import com.hipad.swiftp.server.TcpListener;
-import lombok.val;
 
 public class FsService extends Service implements Runnable {
     private static final String TAG = FsService.class.getSimpleName();
@@ -288,7 +284,7 @@ public class FsService extends Service implements Runnable {
             return null;
         }
         try {
-            val networkInterfaces = Collections.list(NetworkInterface.getNetworkInterfaces());
+            ArrayList<NetworkInterface> networkInterfaces = Collections.list(NetworkInterface.getNetworkInterfaces());
             for (NetworkInterface networkInterface : networkInterfaces) {
                 // only check network interfaces that give local connection
                 if (!networkInterface.getName().matches("^(eth|wlan).*"))
@@ -298,7 +294,6 @@ public class FsService extends Service implements Runnable {
                             && !address.isLinkLocalAddress()
                             && address instanceof Inet4Address) {
                         if (returnAddress != null) {
-                            Cat.w("Found more than one valid address local inet address, why???");
                         }
                         returnAddress = address;
                     }
@@ -325,7 +320,7 @@ public class FsService extends Service implements Runnable {
                 && (ni.getType() & (ConnectivityManager.TYPE_WIFI | ConnectivityManager.TYPE_ETHERNET)) != 0;
         if (!connected) {
             Log.d(TAG, "isConnectedToLocalNetwork: see if it is an WIFI AP");
-            WifiManager wm = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+            WifiManager wm = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
             try {
                 Method method = wm.getClass().getDeclaredMethod("isWifiApEnabled");
                 connected = (Boolean) method.invoke(wm);
@@ -336,7 +331,7 @@ public class FsService extends Service implements Runnable {
         if (!connected) {
             Log.d(TAG, "isConnectedToLocalNetwork: see if it is an USB AP");
             try {
-                val networkInterfaces = Collections.list(NetworkInterface.getNetworkInterfaces());
+                ArrayList<NetworkInterface> networkInterfaces = Collections.list(NetworkInterface.getNetworkInterfaces());
                 for (NetworkInterface netInterface : networkInterfaces) {
                     if (netInterface.getDisplayName().startsWith("rndis")) {
                         connected = true;

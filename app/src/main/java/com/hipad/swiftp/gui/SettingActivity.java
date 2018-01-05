@@ -20,22 +20,20 @@
 package com.hipad.swiftp.gui;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
-
-import net.vrallev.android.cat.Cat;
-
 import com.hipad.swiftp.App;
 import com.hipad.swiftp.BuildConfig;
 import com.hipad.swiftp.FsSettings;
@@ -45,13 +43,12 @@ import com.hipad.swiftp.R;
  * This is the main activity for swiftp, it enables the user to start the server service
  * and allows the users to change the settings.
  */
-public class SettingActivity extends AppCompatActivity{
+public class SettingActivity extends Activity {
 
     final static int PERMISSIONS_REQUEST_CODE = 12;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Cat.d("created");
         setTheme(FsSettings.getTheme());
         super.onCreate(savedInstanceState);
 
@@ -63,13 +60,15 @@ public class SettingActivity extends AppCompatActivity{
         }
 
         if (App.isFreeVersion() && App.isPaidVersionInstalled()) {
-            Cat.d("Running demo while paid is installed");
             AlertDialog ad = new AlertDialog.Builder(this)
                     .setTitle(R.string.demo_while_paid_dialog_title)
                     .setMessage(R.string.demo_while_paid_dialog_message)
                     .setPositiveButton(getText(android.R.string.ok),
-                            (d, w) -> {
-                                finish();
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    finish();
+                                }
                             })
                     .create();
             ad.show();
@@ -83,11 +82,8 @@ public class SettingActivity extends AppCompatActivity{
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode != PERMISSIONS_REQUEST_CODE) {
-            Cat.e("Unhandled request code");
             return;
         }
-        Cat.d("permissions: " + permissions.toString());
-        Cat.d("grantResults: " + grantResults.toString());
         if (grantResults.length > 0) {
             // Permissions not granted, close down
             for (int result : grantResults) {
@@ -131,10 +127,7 @@ public class SettingActivity extends AppCompatActivity{
                 Toast.makeText(this, R.string.unable_to_start_mail_client, Toast.LENGTH_LONG).show();
             }
 
-        } else if (item.getItemId() == R.id.action_about) {
-            startActivity(new Intent(this, AboutActivity.class));
         }
-
         return true;
     }
 }

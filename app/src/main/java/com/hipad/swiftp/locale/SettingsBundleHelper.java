@@ -25,7 +25,6 @@ import android.support.annotation.NonNull;
 import com.twofortyfouram.assertion.BundleAssertions;
 import com.twofortyfouram.spackle.AppBuildInfo;
 
-import net.vrallev.android.cat.Cat;
 
 public final class SettingsBundleHelper {
 
@@ -41,7 +40,6 @@ public final class SettingsBundleHelper {
             BundleAssertions.assertHasBoolean(bundle, BUNDLE_BOOLEAN_RUNNING);
             BundleAssertions.assertHasInt(bundle, BUNDLE_VERSION_CODE);
         } catch (AssertionError e) {
-            Cat.e("Bundle failed verification");
             return false;
         }
         return true;

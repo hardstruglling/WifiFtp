@@ -5,8 +5,6 @@ import android.preference.MultiSelectListPreference;
 import android.util.AttributeSet;
 import android.view.View;
 
-import net.vrallev.android.cat.Cat;
-
 /**
  * Created by ppareit on 31/12/15.
  */
@@ -20,7 +18,6 @@ public class DynamicMultiSelectListPreference extends MultiSelectListPreference 
 
     @Override
     protected View onCreateDialogView() {
-        Cat.d("Creating dialog view");
 
         mPopulateListener.onPopulate(this);
 

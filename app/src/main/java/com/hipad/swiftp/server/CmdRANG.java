@@ -1,6 +1,5 @@
 package com.hipad.swiftp.server;
 
-import net.vrallev.android.cat.Cat;
 
 public class CmdRANG extends FtpCmd implements Runnable {
 
@@ -13,7 +12,6 @@ public class CmdRANG extends FtpCmd implements Runnable {
 
     @Override
     public void run() {
-        Cat.d("RANG executing");
         String param = getParameter(input);
         String splits[] = param.split(" ");
         String errString = null;

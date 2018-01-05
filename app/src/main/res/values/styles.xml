@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Stub themes for future modifications! -->
-    <style name="AppThemeDark" parent="Theme.AppCompat" />
-    <style name="AppThemeLight" parent="Theme.AppCompat.Light" />
-    <style name="AppThemeLight.DarkActionBar" parent="Theme.AppCompat.Light.DarkActionBar" />
+    <style name="AppThemeDark" parent="@android:style/Theme.Holo.Light" />
+    <style name="AppThemeLight" parent="@android:style/Theme.Holo.Light" />
+    <style name="AppThemeLight.DarkActionBar" parent="@android:style/Theme.Holo.Light" />
+    <style name="Theme.FileExplorer" parent="@android:style/Theme.Holo.Light">
+        <item name="android:actionBarStyle">@style/MyActionBarStyle</item>
+        <item name="android:windowBackground">@color/tabBgColor</item>
+    </style>
+    <style name="MyActionBarStyle" parent="@android:style/Widget.Holo.ActionBar.Solid">
+        <item name="android:titleTextStyle">@style/MyActionBarTitleTextStyle</item>
+    </style>
+    <style name="MyActionBarTitleTextStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
 </resources>

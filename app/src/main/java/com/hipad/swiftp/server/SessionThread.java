@@ -19,8 +19,6 @@ along with SwiFTP.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.hipad.swiftp.server;
 
-import net.vrallev.android.cat.Cat;
-
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
@@ -77,10 +75,8 @@ public class SessionThread extends Thread {
     public boolean sendViaDataSocket(String string) {
         try {
             byte[] bytes = string.getBytes(encoding);
-            Cat.d("Using data connection encoding: " + encoding);
             return sendViaDataSocket(bytes, 0, bytes.length);
         } catch (UnsupportedEncodingException e) {
-            Cat.e("Unsupported encoding for data socket send");
             return false;
         }
     }
@@ -96,7 +92,6 @@ public class SessionThread extends Thread {
     public boolean sendViaDataSocket(byte[] bytes, int start, int len) {
 
         if (dataOutputStream == null) {
-            Cat.i("Can't send via null dataOutputStream");
             return false;
         }
         if (len == 0) {
@@ -105,7 +100,6 @@ public class SessionThread extends Thread {
         try {
             dataOutputStream.write(bytes, start, len);
         } catch (IOException e) {
-            Cat.e("Couldn't write output stream for data socket, error:" + e.toString());
             return false;
         }
         localDataSocket.reportTraffic(len);
@@ -127,11 +121,9 @@ public class SessionThread extends Thread {
         int bytesRead;
 
         if (dataSocket == null) {
-            Cat.i("Can't receive from null dataSocket");
             return -2;
         }
         if (!dataSocket.isConnected()) {
-            Cat.i("Can't receive from unconnected socket");
             return -2;
         }
         InputStream in;
@@ -141,7 +133,6 @@ public class SessionThread extends Thread {
                 bytesRead = in.read(buf, 0, buf.length);
             } while (bytesRead == 0);
         } catch (IOException e) {
-            Cat.i("Error reading data socket");
             return 0;
         }
         return bytesRead;
@@ -184,13 +175,11 @@ public class SessionThread extends Thread {
         try {
             dataSocket = localDataSocket.onTransfer();
             if (dataSocket == null) {
-                Cat.i("dataSocketFactory.onTransfer() returned null");
                 return false;
             }
             dataOutputStream = dataSocket.getOutputStream();
             return true;
         } catch (IOException e) {
-            Cat.i("IOException getting OutputStream for data socket");
             dataSocket = null;
             return false;
         }
@@ -200,7 +189,6 @@ public class SessionThread extends Thread {
      * Call when done doing IO over the data socket
      */
     public void closeDataSocket() {
-        Cat.d("Closing data socket");
         if (dataOutputStream != null) {
             try {
                 dataOutputStream.close();
@@ -218,13 +206,11 @@ public class SessionThread extends Thread {
     }
 
     public void quit() {
-        Cat.d("SessionThread told to quit");
         closeSocket();
     }
 
     @Override
     public void run() {
-        Cat.i("SessionThread started");
         // Give client a welcome
         if (sendWelcomeBanner) {
             writeString("220 SwiFTP " + App.getVersion() + " ready\r\n");
@@ -237,15 +223,12 @@ public class SessionThread extends Thread {
                 String line;
                 line = in.readLine(); // will accept \r\n or \n for terminator
                 if (line != null) {
-                    Cat.d("Received line from client: " + line);
                     FtpCmd.dispatchCommand(this, line);
                 } else {
-                    Cat.i("readLine gave null, quitting");
                     break;
                 }
             }
         } catch (IOException e) {
-            Cat.i("Connection was dropped");
         }
         closeSocket();
     }
@@ -269,7 +252,6 @@ public class SessionThread extends Thread {
             out.flush();
             localDataSocket.reportTraffic(bytes.length);
         } catch (IOException e) {
-            Cat.i("Exception writing socket");
             closeSocket();
         }
     }
@@ -279,7 +261,6 @@ public class SessionThread extends Thread {
         try {
             strBytes = str.getBytes(encoding);
         } catch (UnsupportedEncodingException e) {
-            Cat.e("Unsupported encoding: " + encoding);
             strBytes = str.getBytes();
         }
         writeBytes(strBytes);
@@ -336,13 +317,10 @@ public class SessionThread extends Thread {
 
     public void authAttempt(boolean authenticated) {
         if (authenticated) {
-            Cat.i("Authentication complete");
             userAuthenticated = true;
         } else {
             authFails++;
-            Cat.i("Auth failed: " + authFails + "/" + MAX_AUTH_FAILS);
             if (authFails > MAX_AUTH_FAILS) {
-                Cat.i("Too many auth fails, quitting session");
                 quit();
             }
         }
@@ -356,7 +334,6 @@ public class SessionThread extends Thread {
         try {
             this.workingDir = workingDir.getCanonicalFile().getAbsoluteFile();
         } catch (IOException e) {
-            Cat.i("SessionThread canonical error");
         }
     }
 

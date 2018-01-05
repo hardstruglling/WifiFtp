@@ -38,7 +38,7 @@ import com.hipad.swiftp.R;
 public class NsdService extends Service {
     private static final String TAG = NsdService.class.getSimpleName();
 
-    private static final String FTP_SERVICE_TYPE= "_ftp._tcp.";
+    private static final String FTP_SERVICE_TYPE = "_ftp._tcp.";
 
     private NsdManager mNsdManager = null;
 
@@ -104,29 +104,31 @@ public class NsdService extends Service {
         serviceInfo.setServiceType(FTP_SERVICE_TYPE);
         serviceInfo.setPort(FsSettings.getPortNumber());
 
-        new Thread(() -> {
-            // this call sometimes hangs, this is why I get it in a separate thread
-            Log.d(TAG, "onCreate: Trying to get the NsdManager");
-            mNsdManager = (NsdManager) getSystemService(Context.NSD_SERVICE);
-            if (mNsdManager != null) {
-                Log.d(TAG, "onCreate: Got the NsdManager");
-                try {
-                    // all kinds of problems with the NsdManager, give it
-                    // some extra time before I make next call
-                    Thread.sleep(500);
-                    if (running == false) {
-                        Log.e(TAG, "NsdManager is no longer needed, bailing out");
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Log.d(TAG, "onCreate: Trying to get the NsdManager");
+                mNsdManager = (NsdManager) getSystemService(Context.NSD_SERVICE);
+                if (mNsdManager != null) {
+                    Log.d(TAG, "onCreate: Got the NsdManager");
+                    try {
+                        // all kinds of problems with the NsdManager, give it
+                        // some extra time before I make next call
+                        Thread.sleep(500);
+                        if (running == false) {
+                            Log.e(TAG, "NsdManager is no longer needed, bailing out");
+                            mNsdManager = null;
+                            return;
+                        }
+                        mNsdManager.registerService(serviceInfo,
+                                NsdManager.PROTOCOL_DNS_SD, mRegistrationListener);
+                    } catch (Exception e) {
+                        Log.e(TAG, "onCreate: Failed to register NsdManager");
                         mNsdManager = null;
-                        return;
                     }
-                    mNsdManager.registerService(serviceInfo,
-                            NsdManager.PROTOCOL_DNS_SD, mRegistrationListener);
-                } catch (Exception e) {
-                    Log.e(TAG, "onCreate: Failed to register NsdManager");
-                    mNsdManager = null;
+                } else {
+                    Log.d(TAG, "onCreate: Failed to get the NsdManager");
                 }
-            } else {
-                Log.d(TAG, "onCreate: Failed to get the NsdManager");
             }
         }).start();
     }
@@ -155,6 +157,7 @@ public class NsdService extends Service {
         }
         mNsdManager = null;
     }
+
     @Override
     public IBinder onBind(Intent intent) {
         return null;

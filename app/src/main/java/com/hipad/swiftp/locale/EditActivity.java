@@ -28,8 +28,6 @@ import android.widget.RadioGroup;
 
 import com.twofortyfouram.locale.sdk.client.ui.activity.AbstractPluginActivity;
 
-import net.vrallev.android.cat.Cat;
-
 import com.hipad.swiftp.FsSettings;
 import com.hipad.swiftp.R;
 
@@ -52,7 +50,6 @@ public class EditActivity extends AbstractPluginActivity {
                             getPackageManager().getApplicationInfo(getCallingPackage(),
                                     0));
         } catch (final PackageManager.NameNotFoundException e) {
-            Cat.e("Calling package couldn't be found%s", e); //$NON-NLS-1$
         }
         if (null != callingApplicationLabel) {
             setTitle(callingApplicationLabel);
@@ -81,7 +78,6 @@ public class EditActivity extends AbstractPluginActivity {
     public void onPostCreateWithPreviousResult(@NonNull Bundle previousBundle,
                                                @NonNull String previousBlurb) {
         if (!isBundleValid(previousBundle)) {
-            Cat.e("Invalid bundle received, repairing to default");
             previousBundle = SettingsBundleHelper.generateBundle(this, false);
         }
         boolean running = previousBundle.getBoolean(SettingsBundleHelper.BUNDLE_BOOLEAN_RUNNING);

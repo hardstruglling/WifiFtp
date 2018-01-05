@@ -36,7 +36,7 @@ along with SwiFTP.  If not, see <http://www.gnu.org/licenses/>.
         android:icon="@mipmap/launcher"
         android:label="@string/swiftp_name">
         <activity android:name="com.hipad.swiftp.gui.ConnectActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            android:theme="@style/Theme.FileExplorer">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -47,10 +47,6 @@ along with SwiFTP.  If not, see <http://www.gnu.org/licenses/>.
             android:name="com.hipad.swiftp.gui.SettingActivity"
             android:theme="@style/AppThemeDark">
         </activity>
-        <activity
-            android:name="com.hipad.swiftp.gui.AboutActivity"
-            android:parentActivityName="com.hipad.swiftp.gui.SettingActivity"
-            android:theme="@style/AppThemeDark" />
 
         <service android:name="com.hipad.swiftp.FsService" />
 

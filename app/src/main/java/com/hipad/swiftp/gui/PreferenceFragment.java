@@ -44,8 +44,6 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import net.vrallev.android.cat.Cat;
-
 import java.io.File;
 import java.net.InetAddress;
 import java.util.List;
@@ -76,30 +74,35 @@ public class PreferenceFragment extends android.preference.PreferenceFragment im
 
         TwoStatePreference runningPref = findPref("running_switch");
         updateRunningState();
-        runningPref.setOnPreferenceChangeListener((preference, newValue) -> {
-            if ((Boolean) newValue) {
-                startServer();
-            } else {
-                stopServer();
+        runningPref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                if ((Boolean) newValue) {
+                    startServer();
+                } else {
+                    stopServer();
+                }
+                return true;
             }
-            return true;
         });
 
         PreferenceScreen prefScreen = findPref("preference_screen");
         Preference marketVersionPref = findPref("market_version");
-        marketVersionPref.setOnPreferenceClickListener(preference -> {
-            // start the market at our application
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.setData(Uri.parse("market://details?id=be.ppareit.swiftp"));
-            try {
-                // this can fail if there is no market installed
-                startActivity(intent);
-            } catch (Exception e) {
-                Cat.e("Failed to launch the market.");
-                e.printStackTrace();
+        marketVersionPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                // start the market at our application
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setData(Uri.parse("market://details?id=be.ppareit.swiftp"));
+                try {
+                    // this can fail if there is no market installed
+                    startActivity(intent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return false;
             }
-            return false;
         });
         if (!App.isFreeVersion()) {
             prefScreen.removePreference(marketVersionPref);
@@ -108,140 +111,155 @@ public class PreferenceFragment extends android.preference.PreferenceFragment im
         updateLoginInfo();
 
         EditTextPreference usernamePref = findPref("username");
-        usernamePref.setOnPreferenceChangeListener((preference, newValue) -> {
-            String newUsername = (String) newValue;
-            if (preference.getSummary().equals(newUsername))
-                return false;
-            if (!newUsername.matches("[a-zA-Z0-9]+")) {
-                Toast.makeText(getActivity(),
-                        R.string.username_validation_error, Toast.LENGTH_LONG).show();
-                return false;
+        usernamePref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                String newUsername = (String) newValue;
+                if (preference.getSummary().equals(newUsername))
+                    return false;
+                if (!newUsername.matches("[a-zA-Z0-9]+")) {
+                    Toast.makeText(getActivity(),
+                            R.string.username_validation_error, Toast.LENGTH_LONG).show();
+                    return false;
+                }
+                stopServer();
+                return true;
             }
-            stopServer();
-            return true;
         });
 
         mPassWordPref = findPref("password");
-        mPassWordPref.setOnPreferenceChangeListener((preference, newValue) -> {
-            stopServer();
-            return true;
+        mPassWordPref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                stopServer();
+                return true;
+            }
         });
         DynamicMultiSelectListPreference autoconnectListPref = findPref("autoconnect_preference");
-        autoconnectListPref.setOnPopulateListener(
-                pref -> {
-                    Cat.d("autoconnect populate listener");
-
-                    WifiManager wifiManager = (WifiManager)
-                            getActivity().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-                    List<WifiConfiguration> configs = wifiManager.getConfiguredNetworks();
-                    if (configs == null) {
-                        Cat.e("Unable to receive wifi configurations, bark at user and bail");
-                        Toast.makeText(getActivity(),
-                                R.string.autoconnect_error_enable_wifi_for_access_points,
-                                Toast.LENGTH_LONG)
-                                .show();
-                        return;
+        autoconnectListPref.setOnPopulateListener(new DynamicMultiSelectListPreference.OnPopulateListener() {
+            @Override
+            public void onPopulate(DynamicMultiSelectListPreference preference) {
+                WifiManager wifiManager = (WifiManager)
+                        getActivity().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+                List<WifiConfiguration> configs = wifiManager.getConfiguredNetworks();
+                if (configs == null) {
+                    Toast.makeText(getActivity(),
+                            R.string.autoconnect_error_enable_wifi_for_access_points,
+                            Toast.LENGTH_LONG)
+                            .show();
+                    return;
+                }
+                CharSequence[] ssids = new CharSequence[configs.size()];
+                CharSequence[] niceSsids = new CharSequence[configs.size()];
+                for (int i = 0; i < configs.size(); ++i) {
+                    ssids[i] = configs.get(i).SSID;
+                    String ssid = configs.get(i).SSID;
+                    if (ssid.length() > 2 && ssid.startsWith("\"") && ssid.endsWith("\"")) {
+                        ssid = ssid.substring(1, ssid.length() - 1);
                     }
-                    CharSequence[] ssids = new CharSequence[configs.size()];
-                    CharSequence[] niceSsids = new CharSequence[configs.size()];
-                    for (int i = 0; i < configs.size(); ++i) {
-                        ssids[i] = configs.get(i).SSID;
-                        String ssid = configs.get(i).SSID;
-                        if (ssid.length() > 2 && ssid.startsWith("\"") && ssid.endsWith("\"")) {
-                            ssid = ssid.substring(1, ssid.length() - 1);
-                        }
-                        niceSsids[i] = ssid;
-                    }
-                    pref.setEntries(niceSsids);
-                    pref.setEntryValues(ssids);
-                });
+                    niceSsids[i] = ssid;
+                }
+                preference.setEntries(niceSsids);
+                preference.setEntryValues(ssids);
+            }
+        });
 
         EditTextPreference portnum_pref = findPref("portNum");
         portnum_pref.setSummary(sp.getString("portNum",
                 resources.getString(R.string.portnumber_default)));
-        portnum_pref.setOnPreferenceChangeListener((preference, newValue) -> {
-            String newPortnumString = (String) newValue;
-            if (preference.getSummary().equals(newPortnumString))
-                return false;
-            int portnum = 0;
-            try {
-                portnum = Integer.parseInt(newPortnumString);
-            } catch (Exception e) {
-                Cat.d("Error parsing port number! Moving on...");
+        portnum_pref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                String newPortnumString = (String) newValue;
+                if (preference.getSummary().equals(newPortnumString))
+                    return false;
+                int portnum = 0;
+                try {
+                    portnum = Integer.parseInt(newPortnumString);
+                } catch (Exception e) {
+                }
+                if (portnum <= 0 || 65535 < portnum) {
+                    Toast.makeText(getActivity(),
+                            R.string.port_validation_error, Toast.LENGTH_LONG).show();
+                    return false;
+                }
+                preference.setSummary(newPortnumString);
+                stopServer();
+                return true;
             }
-            if (portnum <= 0 || 65535 < portnum) {
-                Toast.makeText(getActivity(),
-                        R.string.port_validation_error, Toast.LENGTH_LONG).show();
-                return false;
-            }
-            preference.setSummary(newPortnumString);
-            stopServer();
-            return true;
         });
 
         Preference chroot_pref = findPref("chrootDir");
         chroot_pref.setSummary(FsSettings.getChrootDirAsString());
-        chroot_pref.setOnPreferenceClickListener(preference -> {
-            AlertDialog folderPicker = new FolderPickerDialogBuilder(getActivity(), FsSettings.getChrootDir())
-                    .setSelectedButton(R.string.select, path -> {
-                        if (preference.getSummary().equals(path))
-                            return;
-                        if (!FsSettings.setChrootDir(path))
-                            return;
-                        // TODO: this is a hotfix, create correct resources, improve UI/UX
-                        final File root = new File(path);
-                        if (!root.canRead()) {
-                            Toast.makeText(getActivity(),
-                                    "Notice that we can't read/write in this folder.",
-                                    Toast.LENGTH_LONG).show();
-                        } else if (!root.canWrite()) {
-                            Toast.makeText(getActivity(),
-                                    "Notice that we can't write in this folder, reading will work. Writing in subfolders might work.",
-                                    Toast.LENGTH_LONG).show();
-                        }
+        chroot_pref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(final Preference preference) {
+                AlertDialog folderPicker = new FolderPickerDialogBuilder(getActivity(), FsSettings.getChrootDir())
+                        .setSelectedButton(R.string.select, new FolderPickerDialogBuilder.OnSelectedListener() {
+                            @Override
+                            public void onSelected(String path) {
+                                if (preference.getSummary().equals(path))
+                                    return;
+                                if (!FsSettings.setChrootDir(path))
+                                    return;
+                                // TODO: this is a hotfix, create correct resources, improve UI/UX
+                                final File root = new File(path);
+                                if (!root.canRead()) {
+                                    Toast.makeText(getActivity(),
+                                            "Notice that we can't read/write in this folder.",
+                                            Toast.LENGTH_LONG).show();
+                                } else if (!root.canWrite()) {
+                                    Toast.makeText(getActivity(),
+                                            "Notice that we can't write in this folder, reading will work. Writing in subfolders might work.",
+                                            Toast.LENGTH_LONG).show();
+                                }
 
-                        preference.setSummary(path);
-                        stopServer();
-                    })
-                    .setNegativeButton(R.string.cancel, null)
-                    .create();
-            folderPicker.show();
-            return true;
+                                preference.setSummary(path);
+                                stopServer();
+                            }
+                        })
+                        .setNegativeButton(R.string.cancel, null)
+                        .create();
+                folderPicker.show();
+                return true;
+            }
         });
 
         final CheckBoxPreference wakelock_pref = findPref("stayAwake");
-        wakelock_pref.setOnPreferenceChangeListener((preference, newValue) -> {
-            stopServer();
-            return true;
+        wakelock_pref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                stopServer();
+                return true;
+            }
         });
 
-        ListPreference theme = findPref("theme");
+        final ListPreference theme = findPref("theme");
         theme.setSummary(theme.getEntry());
-        theme.setOnPreferenceChangeListener((preference, newValue) -> {
-            theme.setSummary(theme.getEntry());
-            getActivity().recreate();
-            return true;
+        theme.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                theme.setSummary(theme.getEntry());
+                getActivity().recreate();
+                return true;
+            }
         });
 
         Preference help = findPref("help");
-        help.setOnPreferenceClickListener(preference -> {
-            Cat.v("On preference help clicked");
-            Context context = getActivity();
-            AlertDialog ad = new AlertDialog.Builder(context)
-                    .setTitle(R.string.help_dlg_title)
-                    .setMessage(R.string.help_dlg_message)
-                    .setPositiveButton(android.R.string.ok, null)
-                    .create();
-            ad.show();
-            Linkify.addLinks((TextView) ad.findViewById(android.R.id.message),
-                    Linkify.ALL);
-            return true;
-        });
-
-        Preference about = findPref("about");
-        about.setOnPreferenceClickListener(preference -> {
-            startActivity(new Intent(getActivity(), AboutActivity.class));
-            return true;
+        help.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Context context = getActivity();
+                AlertDialog ad = new AlertDialog.Builder(context)
+                        .setTitle(R.string.help_dlg_title)
+                        .setMessage(R.string.help_dlg_message)
+                        .setPositiveButton(android.R.string.ok, null)
+                        .create();
+                ad.show();
+                Linkify.addLinks((TextView) ad.findViewById(android.R.id.message),
+                        Linkify.ALL);
+                return true;
+            }
         });
 
     }
@@ -252,11 +270,9 @@ public class PreferenceFragment extends android.preference.PreferenceFragment im
 
         updateRunningState();
 
-        Cat.d("onResume: Register the preference change listner");
         SharedPreferences sp = getPreferenceScreen().getSharedPreferences();
         sp.registerOnSharedPreferenceChangeListener(this);
 
-        Cat.d("onResume: Registering the FTP server actions");
         IntentFilter filter = new IntentFilter();
         filter.addAction(FsService.ACTION_STARTED);
         filter.addAction(FsService.ACTION_STOPPED);
@@ -268,10 +284,8 @@ public class PreferenceFragment extends android.preference.PreferenceFragment im
     public void onPause() {
         super.onPause();
 
-        Cat.v("onPause: Unregistering the FTPServer actions");
         getActivity().unregisterReceiver(mFsActionsReceiver);
 
-        Cat.d("onPause: Unregistering the preference change listner");
         SharedPreferences sp = getPreferenceScreen().getSharedPreferences();
         sp.unregisterOnSharedPreferenceChangeListener(this);
     }
@@ -294,7 +308,6 @@ public class PreferenceFragment extends android.preference.PreferenceFragment im
         String username = FsSettings.getUserName();
         String password = FsSettings.getPassWord();
 
-        Cat.v("Updating login summary");
         PreferenceScreen loginPreference = findPref("login");
         loginPreference.setSummary(username + " : " + transformPassword(password));
         ((BaseAdapter) loginPreference.getRootAdapter()).notifyDataSetChanged();
@@ -314,7 +327,6 @@ public class PreferenceFragment extends android.preference.PreferenceFragment im
             // Fill in the FTP server address
             InetAddress address = FsService.getLocalInetAddress();
             if (address == null) {
-                Cat.v("Unable to retrieve wifi ip address");
                 runningPref.setSummary(R.string.running_summary_failed_to_get_ip_address);
                 return;
             }
@@ -336,7 +348,6 @@ public class PreferenceFragment extends android.preference.PreferenceFragment im
     BroadcastReceiver mFsActionsReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Cat.v("action received: " + intent.getAction());
             // remove all pending callbacks
             mHandler.removeCallbacksAndMessages(null);
             // action will be ACTION_STARTED or ACTION_STOPPED
@@ -345,12 +356,18 @@ public class PreferenceFragment extends android.preference.PreferenceFragment im
             final TwoStatePreference runningPref = findPref("running_switch");
             if (intent.getAction().equals(FsService.ACTION_FAILEDTOSTART)) {
                 runningPref.setChecked(false);
-                mHandler.postDelayed(
-                        () -> runningPref.setSummary(R.string.running_summary_failed),
-                        100);
-                mHandler.postDelayed(
-                        () -> runningPref.setSummary(R.string.running_summary_stopped),
-                        5000);
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        runningPref.setSummary(R.string.running_summary_failed);
+                    }
+                }, 100);
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        runningPref.setSummary(R.string.running_summary_stopped);
+                    }
+                }, 5000);
             }
         }
     };

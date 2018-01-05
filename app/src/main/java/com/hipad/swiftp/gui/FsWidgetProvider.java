@@ -28,11 +28,7 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.RemoteViews;
-
-import net.vrallev.android.cat.Cat;
-
 import java.net.InetAddress;
-
 import com.hipad.swiftp.FsService;
 import com.hipad.swiftp.R;
 
@@ -82,7 +78,6 @@ public class FsWidgetProvider extends AppWidgetProvider {
                 // get ip address
                 InetAddress address = FsService.getLocalInetAddress();
                 if (address == null) {
-                    Cat.w("Unable to retrieve the local ip address");
                     text = "ERROR";
                 } else {
                     text = address.getHostAddress();
