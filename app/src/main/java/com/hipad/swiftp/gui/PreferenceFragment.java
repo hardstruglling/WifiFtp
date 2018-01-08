@@ -87,26 +87,6 @@ public class PreferenceFragment extends android.preference.PreferenceFragment im
         });
 
         PreferenceScreen prefScreen = findPref("preference_screen");
-        Preference marketVersionPref = findPref("market_version");
-        marketVersionPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                // start the market at our application
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.setData(Uri.parse("market://details?id=be.ppareit.swiftp"));
-                try {
-                    // this can fail if there is no market installed
-                    startActivity(intent);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return false;
-            }
-        });
-        if (!App.isFreeVersion()) {
-            prefScreen.removePreference(marketVersionPref);
-        }
 
         updateLoginInfo();
 
