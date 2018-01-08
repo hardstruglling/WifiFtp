@@ -135,35 +135,6 @@ public class PreferenceFragment extends android.preference.PreferenceFragment im
                 return true;
             }
         });
-        DynamicMultiSelectListPreference autoconnectListPref = findPref("autoconnect_preference");
-        autoconnectListPref.setOnPopulateListener(new DynamicMultiSelectListPreference.OnPopulateListener() {
-            @Override
-            public void onPopulate(DynamicMultiSelectListPreference preference) {
-                WifiManager wifiManager = (WifiManager)
-                        getActivity().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-                List<WifiConfiguration> configs = wifiManager.getConfiguredNetworks();
-                if (configs == null) {
-                    Toast.makeText(getActivity(),
-                            R.string.autoconnect_error_enable_wifi_for_access_points,
-                            Toast.LENGTH_LONG)
-                            .show();
-                    return;
-                }
-                CharSequence[] ssids = new CharSequence[configs.size()];
-                CharSequence[] niceSsids = new CharSequence[configs.size()];
-                for (int i = 0; i < configs.size(); ++i) {
-                    ssids[i] = configs.get(i).SSID;
-                    String ssid = configs.get(i).SSID;
-                    if (ssid.length() > 2 && ssid.startsWith("\"") && ssid.endsWith("\"")) {
-                        ssid = ssid.substring(1, ssid.length() - 1);
-                    }
-                    niceSsids[i] = ssid;
-                }
-                preference.setEntries(niceSsids);
-                preference.setEntryValues(ssids);
-            }
-        });
-
         EditTextPreference portnum_pref = findPref("portNum");
         portnum_pref.setSummary(sp.getString("portNum",
                 resources.getString(R.string.portnumber_default)));
@@ -245,22 +216,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment im
             }
         });
 
-        Preference help = findPref("help");
-        help.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                Context context = getActivity();
-                AlertDialog ad = new AlertDialog.Builder(context)
-                        .setTitle(R.string.help_dlg_title)
-                        .setMessage(R.string.help_dlg_message)
-                        .setPositiveButton(android.R.string.ok, null)
-                        .create();
-                ad.show();
-                Linkify.addLinks((TextView) ad.findViewById(android.R.id.message),
-                        Linkify.ALL);
-                return true;
-            }
-        });
+
 
     }
 
